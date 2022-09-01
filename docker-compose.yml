@@ -5,6 +5,7 @@ services:
     image: prom/prometheus:latest
     user: "$UID:$GID"
     container_name: prometheus
+    restart: unless-stopped
     volumes:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
       - ~/docker/volumes/prometheus:/prometheus
@@ -14,6 +15,7 @@ services:
     image: grafana/grafana:latest
     user: "$UID:$GID"
     container_name: grafana
+    restart: unless-stopped
     ports:
       - "3000:3000"
     volumes:
@@ -23,6 +25,7 @@ services:
     image: grafana/loki:2.6.1
     container_name: loki
     user: "$UID:$GID"
+    restart: unless-stopped
     volumes:
       - ./loki/config.yml:/etc/config/loki.yml
       - ~/docker/volumes/loki:/data/loki
@@ -32,13 +35,27 @@ services:
   promtail:
     image: grafana/promtail:2.6.1
     container_name: promtail
+    restart: unless-stopped
     volumes:
       - "./promtail/config.yml:/etc/promtail/config.yml"
       - /var/log:/var/log:ro
 
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    user: "$UID:$GID"
+    container_name: node_exporter
+    restart: unless-stopped
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+
   prometheus-auth:
     image: nginx:latest
     container_name: prometheus-auth
+    restart: unless-stopped
     ports:
       - 9090:80
     volumes:
@@ -48,6 +65,7 @@ services:
   loki-auth:
     image: nginx:latest
     container_name: loki-auth
+    restart: unless-stopped
     ports:
       - 3100:80
     volumes:
@@ -57,6 +75,7 @@ services:
   promtail-auth:
     image: nginx:latest
     container_name: promtail-auth
+    restart: unless-stopped
     ports:
       - 9080:80
     volumes:
