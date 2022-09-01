@@ -5,22 +5,13 @@ services:
     image: prom/prometheus:latest
     user: "$UID:$GID"
     container_name: prometheus
+    ports:
+      - "9090:9090"
     volumes:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
       - ~/docker/volumes/prometheus:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-  prometheus-auth:
-    image: beevelop/nginx-basic-auth
-    container_name: prometheus-auth
-    ports:
-      - "9090:80"
-    depends_on:
-      - prometheus
-    environment: 
-      - FORWARD_HOST=prometheus
-      - FORWARD_PORT=9090
-      - HTPASSWD=${AUTH_USERNAME}:${AUTH_PASSWORD}
 
   grafana:
     image: grafana/grafana:latest
@@ -37,15 +28,3 @@ services:
   #   command:
   #     - -config.file=/etc/loki/local-config.yaml
   #     - -print-config-stderr=true
-  
-  # loki-auth:
-  #   image: beevelop/nginx-basic-auth
-  #   container_name: loki-auth
-  #   ports:
-  #     - "3100:80"
-  #   depends_on:
-  #     - loki
-  #   environment: 
-  #     - FORWARD_HOST=loki
-  #     - FORWARD_PORT=3100
-  #     - HTPASSWD=${AUTH_USERNAME}:${AUTH_PASSWORD}
