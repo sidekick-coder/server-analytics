@@ -20,7 +20,7 @@ services:
     environment: 
       - FORWARD_HOST=prometheus
       - FORWARD_PORT=9090
-      - HTPASSWD=${AUTH_USERNAME}:${${AUTH_PASSWORD}
+      - HTPASSWD=${AUTH_USERNAME}:${AUTH_PASSWORD}
 
   grafana:
     image: grafana/grafana:latest
@@ -48,4 +48,4 @@ services:
   #   environment: 
   #     - FORWARD_HOST=loki
   #     - FORWARD_PORT=3100
-  #     - HTPASSWD=${AUTH_USERNAME}:${${AUTH_PASSWORD}
+  #     - HTPASSWD=${AUTH_USERNAME}:${AUTH_PASSWORD}
