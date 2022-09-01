@@ -5,13 +5,21 @@ services:
     image: prom/prometheus:latest
     user: "$UID:$GID"
     container_name: prometheus
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
       - ~/docker/volumes/prometheus:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+  
+  prometheus-auth:
+    image: beevelop/nginx-basic-auth
+    container_name: prometheus-auth
+    ports:
+      - "9090:80"
+    environment:
+      - HTPASSWD=$HTPASSWD
+      - FORWARD_PORT=9090
+      - FORWARD_HOST=prometheus
 
   grafana:
     image: grafana/grafana:latest
