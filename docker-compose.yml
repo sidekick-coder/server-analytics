@@ -5,13 +5,22 @@ services:
     image: prom/prometheus:latest
     user: "$UID:$GID"
     container_name: prometheus
-    ports:
-      - "9090:9090"
     volumes:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
       - ~/docker/volumes/prometheus:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+  prometheus-auth:
+    image: beevelop/nginx-basic-auth
+    container_name: prometheus-auth
+    ports:
+      - "9090:80"
+    depends_on:
+      - loki
+    environment: 
+      - FORWARD_HOST=loki
+      - FORWARD_PORT=3100
+      - HTPASSWD=${AUTH_USERNAME}:${${AUTH_PASSWORD}
 
   grafana:
     image: grafana/grafana:latest
@@ -21,20 +30,22 @@ services:
       - "3000:3000"
     volumes:
       - ~/docker/volumes/grafana:/var/lib/grafana
-
-  promtail:
-    image: grafana/promtail:2.0.0
-    container_name: promtail
-    volumes:
-      - "./promtail/config.yml:/etc/promtail/config.yml"
-    ports:
-        - "9080:9080"
   
-  loki:
-    image: grafana/loki:2.0.0
-    container_name: loki
-    ports:
-      - "3100:3100"
-    command:
-      - -config.file=/etc/loki/local-config.yaml
-      - -print-config-stderr=true
+  # loki:
+  #   image: grafana/loki:2.0.0
+  #   container_name: loki
+  #   command:
+  #     - -config.file=/etc/loki/local-config.yaml
+  #     - -print-config-stderr=true
+  # loki-auth:
+  #   image: laurentbel/nginx-basic-auth
+  #   container_name: loki-auth
+  #   ports:
+  #     - "3100:80"
+  #   depends_on:
+  #     - loki
+  #   environment: 
+  #     - FORWARD_HOST=loki
+  #     - FORWARD_PORT=3100
+  #     - BASIC_USERNAME=${LOKI_USERNAME}
+  #     - BASIC_PASSWORD=${LOKI_PASSWORD}
