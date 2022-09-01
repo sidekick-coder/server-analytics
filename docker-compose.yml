@@ -10,16 +10,14 @@ services:
       - ~/docker/volumes/prometheus:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
-  
   prometheus-auth:
-    image: beevelop/nginx-basic-auth
+    image: nginx:latest
     container_name: prometheus-auth
     ports:
-      - "9090:80"
-    environment:
-      - HTPASSWD=$HTPASSWD
-      - FORWARD_PORT=9090
-      - FORWARD_HOST=prometheus
+      - 9090:80
+    volumes:
+      - ./prometheus/nginx.conf:/etc/nginx/nginx.conf
+      - ./prometheus/.htpasswd:/etc/nginx/.htpasswd
 
   grafana:
     image: grafana/grafana:latest
