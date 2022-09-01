@@ -24,10 +24,10 @@ services:
     container_name: loki
     user: "$UID:$GID"
     volumes:
-      - ./loki/config.yaml:/etc/config/loki.yaml
+      - ./loki/config.yml:/etc/config/loki.yml
       - ~/docker/volumes/loki:/data/loki
     command:
-      - -config.file=/etc/config/loki.yaml
+      - -config.file=/etc/config/loki.yml
       - -print-config-stderr=true
   promtail:
     image: grafana/promtail:2.6.1
