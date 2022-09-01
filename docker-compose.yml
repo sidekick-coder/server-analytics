@@ -41,13 +41,12 @@ services:
       - /var/log:/var/log:ro
 
   node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
+    image: prom/node-exporter:latest
     user: "$UID:$GID"
     container_name: node_exporter
     restart: unless-stopped
     command:
       - '--path.rootfs=/host'
-    network_mode: host
     pid: host
     volumes:
       - '/:/host:ro,rslave'
