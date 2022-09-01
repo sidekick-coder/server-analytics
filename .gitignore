@@ -1,3 +1,7 @@
 .env
 prometheus/*
 !prometheus/.gitkeep
+loki/*
+!loki/.gitkeep
+promtail/*
+!promtail/.gitkeep
