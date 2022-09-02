@@ -1,82 +1,97 @@
 version: '3.8'
 
 services:
-  prometheus:
-    image: prom/prometheus:latest
-    user: "$UID:$GID"
-    container_name: prometheus
-    restart: unless-stopped
-    volumes:
-      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
-      - ~/docker/volumes/prometheus:/prometheus
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-  grafana:
-    image: grafana/grafana:latest
-    user: "$UID:$GID"
-    container_name: grafana
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    volumes:
-      - ~/docker/volumes/grafana:/var/lib/grafana
-  
-  loki:
-    image: grafana/loki:2.6.1
-    container_name: loki
-    user: "$UID:$GID"
-    restart: unless-stopped
-    volumes:
-      - ./loki/config.yml:/etc/config/loki.yml
-      - ~/docker/volumes/loki:/data/loki
-    command:
-      - -config.file=/etc/config/loki.yml
-      - -print-config-stderr=true
-  promtail:
-    image: grafana/promtail:2.6.1
-    container_name: promtail
-    restart: unless-stopped
-    volumes:
-      - "./promtail/config.yml:/etc/promtail/config.yml"
-      - /var/log:/var/log:ro
-
   node_exporter:
-    image: prom/node-exporter:latest
-    user: "$UID:$GID"
-    container_name: node_exporter
-    restart: unless-stopped
-    command:
-      - '--path.rootfs=/host'
-    pid: host
-    volumes:
-      - '/:/host:ro,rslave'
-
-  prometheus-auth:
-    image: nginx:latest
-    container_name: prometheus-auth
-    restart: unless-stopped
-    ports:
-      - 9090:80
-    volumes:
-      - ./prometheus/nginx.conf:/etc/nginx/nginx.conf
-      - ./prometheus/.htpasswd:/etc/nginx/.htpasswd
+    extends:
+      file: node_exporter/docker-compose.yml
+      service: node_exporter
   
-  loki-auth:
+  node_exporter_auth:
     image: nginx:latest
-    container_name: loki-auth
+    container_name: node_exporter_auth
     restart: unless-stopped
     ports:
-      - 3100:80
+      - 9100:80
     volumes:
-      - ./loki/nginx.conf:/etc/nginx/nginx.conf
-      - ./loki/.htpasswd:/etc/nginx/.htpasswd
+      - ./node_exporter/nginx.conf:/etc/nginx/nginx.conf
+      - ./node_exporter/.htpasswd:/etc/nginx/.htpasswd
 
-  promtail-auth:
-    image: nginx:latest
-    container_name: promtail-auth
-    restart: unless-stopped
-    ports:
-      - 9080:80
-    volumes:
-      - ./promtail/nginx.conf:/etc/nginx/nginx.conf
-      - ./promtail/.htpasswd:/etc/nginx/.htpasswd
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   user: "$UID:$GID"
+  #   container_name: prometheus
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+  #     - ~/docker/volumes/prometheus:/prometheus
+  #   command:
+  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   user: "$UID:$GID"
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ~/docker/volumes/grafana:/var/lib/grafana
+  
+  # loki:
+  #   image: grafana/loki:2.6.1
+  #   container_name: loki
+  #   user: "$UID:$GID"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./loki/config.yml:/etc/config/loki.yml
+  #     - ~/docker/volumes/loki:/data/loki
+  #   command:
+  #     - -config.file=/etc/config/loki.yml
+  #     - -print-config-stderr=true
+  # promtail:
+  #   image: grafana/promtail:2.6.1
+  #   container_name: promtail
+  #   restart: unless-stopped
+  #   volumes:
+  #     - "./promtail/config.yml:/etc/promtail/config.yml"
+  #     - /var/log:/var/log:ro
+
+  # node_exporter:
+  #   image: prom/node-exporter:latest
+  #   user: "$UID:$GID"
+  #   container_name: node_exporter
+  #   restart: unless-stopped
+  #   command:
+  #     - '--path.rootfs=/host'
+  #   pid: host
+  #   volumes:
+  #     - '/:/host:ro,rslave'
+
+  # prometheus-auth:
+  #   image: nginx:latest
+  #   container_name: prometheus-auth
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9090:80
+  #   volumes:
+  #     - ./prometheus/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./prometheus/.htpasswd:/etc/nginx/.htpasswd
+  
+  # loki-auth:
+  #   image: nginx:latest
+  #   container_name: loki-auth
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3100:80
+  #   volumes:
+  #     - ./loki/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./loki/.htpasswd:/etc/nginx/.htpasswd
+
+  # promtail-auth:
+  #   image: nginx:latest
+  #   container_name: promtail-auth
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9080:80
+  #   volumes:
+  #     - ./promtail/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./promtail/.htpasswd:/etc/nginx/.htpasswd

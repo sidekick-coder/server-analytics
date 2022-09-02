@@ -1,17 +1,30 @@
-#1 /bin/bash
+#! /bin/bash
 
 BASE_PATH=$PWD
 
-echo $BASE_PATH
+## create .htpasswd if not exist
+[ ! -f $BASE_PATH/.htpasswd ] && echo 'foo:$apr1$odHl5EJN$KbxMfo86Qdve2FH4owePn.' >> $BASE_PATH/.htpasswd
 
-ln -s $BASE_PATH/.templates/loki/config.yml $BASE_PATH/loki/config.yml
-ln -s $BASE_PATH/.templates/loki/nginx.conf $BASE_PATH/loki/nginx.conf
-echo '' >> $BASE_PATH/loki/.htpasswd
+# create symlinks
+declare -a symlinks=(
+    ## node_exporter
+    "$BASE_PATH/.htpasswd:$BASE_PATH/node_exporter/.htpasswd"
+    "$BASE_PATH/templates/node_exporter/docker-compose.yml:$BASE_PATH/node_exporter/docker-compose.yml"
+    "$BASE_PATH/templates/node_exporter/nginx.conf:$BASE_PATH/node_exporter/nginx.conf"
+)
 
-ln -s $BASE_PATH/.templates/prometheus/config.yml $BASE_PATH/prometheus/config.yml
-ln -s $BASE_PATH/.templates/prometheus/nginx.conf $BASE_PATH/prometheus/nginx.conf
-echo '' >> $BASE_PATH/prometheus/.htpasswd
+length=${#symlinks[@]}
 
-ln -s $BASE_PATH/.templates/promtail/config.yml $BASE_PATH/promtail/config.yml
-ln -s $BASE_PATH/.templates/promtail/nginx.conf $BASE_PATH/promtail/nginx.conf
-echo '' >> $BASE_PATH/promtail/.htpasswd
+## Loop to create required files if they not exists
+for (( i=0; i<${length}; i++ )); do
+    symlink=${symlinks[$i]}
+    source=${symlink%":"*}
+    target=${symlink#*":"}
+    
+    if [ ! -f "$target" ]; then
+        ln -s $source $target    
+        echo "(created): ${target/$BASE_PATH\//}"
+    else 
+        echo "(skipping): ${target/$BASE_PATH\//}"
+    fi
+done
