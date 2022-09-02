@@ -41,45 +41,9 @@ services:
       file: promtail/docker-compose.yml
       service: auth
   
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   user: "$UID:$GID"
-  #   container_name: grafana
-  #   restart: unless-stopped
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ~/docker/volumes/grafana:/var/lib/grafana
-
-  # node_exporter:
-  #   image: prom/node-exporter:latest
-  #   user: "$UID:$GID"
-  #   container_name: node_exporter
-  #   restart: unless-stopped
-  #   command:
-  #     - '--path.rootfs=/host'
-  #   pid: host
-  #   volumes:
-  #     - '/:/host:ro,rslave'
-
+  grafana:
+    extends:
+      file: grafana/docker-compose.yml
+      service: grafana
   
   
-  # loki-auth:
-  #   image: nginx:latest
-  #   container_name: loki-auth
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3100:80
-  #   volumes:
-  #     - ./loki/nginx.conf:/etc/nginx/nginx.conf
-  #     - ./loki/.htpasswd:/etc/nginx/.htpasswd
-
-  # promtail-auth:
-  #   image: nginx:latest
-  #   container_name: promtail-auth
-  #   restart: unless-stopped
-  #   ports:
-  #     - 9080:80
-  #   volumes:
-  #     - ./promtail/nginx.conf:/etc/nginx/nginx.conf
-  #     - ./promtail/.htpasswd:/etc/nginx/.htpasswd

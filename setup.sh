@@ -33,6 +33,10 @@ declare -a symlinks=(
     "$BASE_PATH/templates/promtail/nginx.conf:$BASE_PATH/promtail/nginx.conf"
     "$BASE_PATH/templates/promtail/config.yml:$BASE_PATH/promtail/config.yml"
 
+    ## grafana
+    "$BASE_PATH/templates/grafana/docker-compose.yml:$BASE_PATH/grafana/docker-compose.yml"
+    
+
 )
 
 length=${#symlinks[@]}
