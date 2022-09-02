@@ -45,3 +45,7 @@ cp templates/promtail/config.yml promtail
 # customize the new file
 nano promtail/config.yml
 ```
+
+## Notes
+
+- Services rely on `$PWD` variable so always run docker from root directory

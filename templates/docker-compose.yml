@@ -20,6 +20,16 @@ services:
     extends:
       file: node_exporter/docker-compose.yml
       service: auth
+  
+  prometheus:
+    extends:
+      file: prometheus/docker-compose.yml
+      service: prometheus
+  
+  prometheus_auth:
+    extends:
+      file: prometheus/docker-compose.yml
+      service: auth
 
   # prometheus:
   #   image: prom/prometheus:latest

@@ -21,6 +21,12 @@ declare -a symlinks=(
     "$BASE_PATH/templates/node_exporter/docker-compose.yml:$BASE_PATH/node_exporter/docker-compose.yml"
     "$BASE_PATH/templates/node_exporter/nginx.conf:$BASE_PATH/node_exporter/nginx.conf"
 
+    ## prometheus
+    "$BASE_PATH/.htpasswd:$BASE_PATH/prometheus/.htpasswd"
+    "$BASE_PATH/templates/prometheus/docker-compose.yml:$BASE_PATH/prometheus/docker-compose.yml"
+    "$BASE_PATH/templates/prometheus/nginx.conf:$BASE_PATH/prometheus/nginx.conf"
+    "$BASE_PATH/templates/prometheus/config.yml:$BASE_PATH/prometheus/config.yml"
+
 )
 
 length=${#symlinks[@]}
