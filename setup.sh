@@ -7,10 +7,20 @@ BASE_PATH=$PWD
 
 # create symlinks
 declare -a symlinks=(
+    ## docker
+    "$BASE_PATH/templates/docker-compose.yml:$BASE_PATH/docker-compose.yml"
+
+    ## loki
+    "$BASE_PATH/.htpasswd:$BASE_PATH/loki/.htpasswd"
+    "$BASE_PATH/templates/loki/docker-compose.yml:$BASE_PATH/loki/docker-compose.yml"
+    "$BASE_PATH/templates/loki/nginx.conf:$BASE_PATH/loki/nginx.conf"
+    "$BASE_PATH/templates/loki/config.yml:$BASE_PATH/loki/config.yml"
+
     ## node_exporter
     "$BASE_PATH/.htpasswd:$BASE_PATH/node_exporter/.htpasswd"
     "$BASE_PATH/templates/node_exporter/docker-compose.yml:$BASE_PATH/node_exporter/docker-compose.yml"
     "$BASE_PATH/templates/node_exporter/nginx.conf:$BASE_PATH/node_exporter/nginx.conf"
+
 )
 
 length=${#symlinks[@]}

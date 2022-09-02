@@ -1,20 +1,25 @@
 version: '3.8'
 
 services:
+  loki:
+    extends:
+      file: loki/docker-compose.yml
+      service: loki
+
+  loki_auth:
+    extends:
+      file: loki/docker-compose.yml
+      service: auth
+  
   node_exporter:
     extends:
       file: node_exporter/docker-compose.yml
       service: node_exporter
   
   node_exporter_auth:
-    image: nginx:latest
-    container_name: node_exporter_auth
-    restart: unless-stopped
-    ports:
-      - 9100:80
-    volumes:
-      - ./node_exporter/nginx.conf:/etc/nginx/nginx.conf
-      - ./node_exporter/.htpasswd:/etc/nginx/.htpasswd
+    extends:
+      file: node_exporter/docker-compose.yml
+      service: auth
 
   # prometheus:
   #   image: prom/prometheus:latest
