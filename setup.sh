@@ -26,6 +26,12 @@ declare -a symlinks=(
     "$BASE_PATH/templates/prometheus/docker-compose.yml:$BASE_PATH/prometheus/docker-compose.yml"
     "$BASE_PATH/templates/prometheus/nginx.conf:$BASE_PATH/prometheus/nginx.conf"
     "$BASE_PATH/templates/prometheus/config.yml:$BASE_PATH/prometheus/config.yml"
+    
+    ## prometail
+    "$BASE_PATH/.htpasswd:$BASE_PATH/promtail/.htpasswd"
+    "$BASE_PATH/templates/promtail/docker-compose.yml:$BASE_PATH/promtail/docker-compose.yml"
+    "$BASE_PATH/templates/promtail/nginx.conf:$BASE_PATH/promtail/nginx.conf"
+    "$BASE_PATH/templates/promtail/config.yml:$BASE_PATH/promtail/config.yml"
 
 )
 

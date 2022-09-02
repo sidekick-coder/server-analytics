@@ -30,17 +30,17 @@ services:
     extends:
       file: prometheus/docker-compose.yml
       service: auth
-
-  # prometheus:
-  #   image: prom/prometheus:latest
-  #   user: "$UID:$GID"
-  #   container_name: prometheus
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
-  #     - ~/docker/volumes/prometheus:/prometheus
-  #   command:
-  #     - "--config.file=/etc/prometheus/prometheus.yml"
+  
+  promtail:
+    extends:
+      file: promtail/docker-compose.yml
+      service: promtail
+  
+  promtail-auth:
+    extends:
+      file: promtail/docker-compose.yml
+      service: auth
+  
   # grafana:
   #   image: grafana/grafana:latest
   #   user: "$UID:$GID"
@@ -50,25 +50,6 @@ services:
   #     - "3000:3000"
   #   volumes:
   #     - ~/docker/volumes/grafana:/var/lib/grafana
-  
-  # loki:
-  #   image: grafana/loki:2.6.1
-  #   container_name: loki
-  #   user: "$UID:$GID"
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./loki/config.yml:/etc/config/loki.yml
-  #     - ~/docker/volumes/loki:/data/loki
-  #   command:
-  #     - -config.file=/etc/config/loki.yml
-  #     - -print-config-stderr=true
-  # promtail:
-  #   image: grafana/promtail:2.6.1
-  #   container_name: promtail
-  #   restart: unless-stopped
-  #   volumes:
-  #     - "./promtail/config.yml:/etc/promtail/config.yml"
-  #     - /var/log:/var/log:ro
 
   # node_exporter:
   #   image: prom/node-exporter:latest
@@ -81,15 +62,7 @@ services:
   #   volumes:
   #     - '/:/host:ro,rslave'
 
-  # prometheus-auth:
-  #   image: nginx:latest
-  #   container_name: prometheus-auth
-  #   restart: unless-stopped
-  #   ports:
-  #     - 9090:80
-  #   volumes:
-  #     - ./prometheus/nginx.conf:/etc/nginx/nginx.conf
-  #     - ./prometheus/.htpasswd:/etc/nginx/.htpasswd
+  
   
   # loki-auth:
   #   image: nginx:latest
