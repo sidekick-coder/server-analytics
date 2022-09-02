@@ -1,8 +1,13 @@
 .env
 .htpasswd
+.volumes
 docker-compose.yml
 
-!templates/**/docker-compose.yml
+grafana/*
+!grafana/.gitkeep
+
+loki/*
+!loki/.gitkeep
 
 node_exporter/*
 !node_exporter/.gitkeep
@@ -10,9 +15,7 @@ node_exporter/*
 prometheus/*
 !prometheus/.gitkeep
 
-loki/*
-!loki/.gitkeep
-
 promtail/*
 !promtail/.gitkeep
 
+!templates/**/docker-compose.yml

@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     volumes:
       - $PWD/prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - $PWD/.volumes/prometheus:/prometheus
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
   

@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     volumes:
       - $PWD/loki/config.yml:/etc/config/loki.yml
+      - $PWD/.volumes/loki:/data/loki
     command:
       - -config.file=/etc/config/loki.yml
       - -print-config-stderr=true
