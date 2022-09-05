@@ -1,0 +1,10 @@
+groups:
+  - name: instance-watcher
+    rules:
+      - alert: instance-down
+        expr: up == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.instance }} instance down"

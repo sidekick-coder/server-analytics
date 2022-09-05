@@ -10,6 +10,12 @@ declare -a symlinks=(
     ## docker
     "$BASE_PATH/templates/docker-compose.yml:$BASE_PATH/docker-compose.yml"
 
+    ## alert_manager
+    "$BASE_PATH/.htpasswd:$BASE_PATH/alertmanager/.htpasswd"
+    "$BASE_PATH/templates/alertmanager/docker-compose.yml:$BASE_PATH/alertmanager/docker-compose.yml"
+    "$BASE_PATH/templates/alertmanager/config.yml:$BASE_PATH/alertmanager/config.yml"
+    "$BASE_PATH/templates/alertmanager/nginx.conf:$BASE_PATH/alertmanager/nginx.conf"
+
     ## loki
     "$BASE_PATH/.htpasswd:$BASE_PATH/loki/.htpasswd"
     "$BASE_PATH/templates/loki/docker-compose.yml:$BASE_PATH/loki/docker-compose.yml"
@@ -26,6 +32,7 @@ declare -a symlinks=(
     "$BASE_PATH/templates/prometheus/docker-compose.yml:$BASE_PATH/prometheus/docker-compose.yml"
     "$BASE_PATH/templates/prometheus/nginx.conf:$BASE_PATH/prometheus/nginx.conf"
     "$BASE_PATH/templates/prometheus/config.yml:$BASE_PATH/prometheus/config.yml"
+    "$BASE_PATH/templates/prometheus/alerts.yml:$BASE_PATH/prometheus/alerts.yml"
     
     ## prometail
     "$BASE_PATH/.htpasswd:$BASE_PATH/promtail/.htpasswd"

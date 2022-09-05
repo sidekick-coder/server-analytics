@@ -3,6 +3,9 @@
 .volumes
 docker-compose.yml
 
+alertmanager/*
+!alertmanager/.gitkeep
+
 grafana/*
 !grafana/.gitkeep
 
@@ -17,5 +20,6 @@ prometheus/*
 
 promtail/*
 !promtail/.gitkeep
+
 
 !templates/**/docker-compose.yml
