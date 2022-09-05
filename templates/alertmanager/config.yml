@@ -1,18 +1,19 @@
 global:
-  # The smarthost and SMTP sender used for mail notifications.
-  smtp_smarthost: "smtp.gmail.com:587"
-  smtp_from: "example@test.com"
-  smtp_auth_username: "username"
-  smtp_auth_password: "password"
+  resolve_timeout: 1m
 
 route:
+  receiver: "mail"
   group_by: ["alertname"]
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 24h
-  receiver: "default"
+  repeat_interval: 4h
 
 receivers:
-  - name: "default"
+  - name: "mail"
     email_configs:
-      - to: "recipient@gmail.com"
+      - smarthost: "smtp.gmail.com:587"
+        auth_username: "no-reply@sidekick-coder.com"
+        auth_identity: "no-reply@sidekick-coder.com"
+        auth_password: "password"
+        from: "no-reply@sidekick-coder.com"
+        to: "henrique@sidekick-coder.com"
+        tls_config:
+          insecure_skip_verify: true

@@ -7,9 +7,10 @@ services:
     user: "$UID:$GID"
     restart: unless-stopped
     volumes:
-      - $PWD/alertmanager/config.yml:/alertmanager/alertmanager.yml
+      - $PWD/alertmanager/config.yml:/alertmanager/config.yml
+      - $PWD/.volumes/alertmanager:/data
     command:
-            - '--config.file=/alertmanager/alertmanager.yml'
+      - --config.file=/alertmanager/config.yml
   
   auth:
     image: nginx:latest
